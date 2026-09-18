@@ -1,26 +1,763 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Invitación de boda — sistema de estilos
+   Paleta y tipografía editables desde :root
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primario: #e5c6c6;
+  --color-secundario: #c0b9b0;
+  --color-texto: #282828;
+  --color-footer: #666666;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat), "Montserrat", sans-serif;
+  font-size: 17px;
+  color: var(--color-texto);
+  background: #ffffff;
+  overflow-x: hidden;
+}
+
+p {
+  font-family: var(--font-montserrat), "Montserrat", sans-serif;
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+
+h4 {
+  font-family: var(--font-montserrat), "Montserrat", sans-serif;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: 400;
+  margin: 0 0 1rem;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+/* ---------- Botones ---------- */
+
+.btn {
+  display: inline-block;
+  font-family: var(--font-montserrat), "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--color-primario);
+  color: var(--color-texto);
+  border-radius: 30px;
+  padding: 10px 40px;
+  border: 1px solid var(--color-primario);
+  text-transform: uppercase;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out;
+}
+
+.btn:hover {
+  color: var(--color-primario);
+  background-color: #ffffff;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-texto);
+  outline-offset: 3px;
+}
+
+.btn-alt {
+  background-color: #ffffff;
+  color: var(--color-texto);
+  border: 1px solid var(--color-primario);
+}
+
+.btn-alt:hover {
+  color: #ffffff;
+  background-color: var(--color-primario);
+  border: 1px solid #ffffff;
+}
+
+/* ---------- Animaciones ---------- */
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.is-visible {
+  animation-duration: 1.5s;
+  animation-fill-mode: both;
+  animation-name: fadeInUp;
+  opacity: 1;
+}
+
+.reveal-fade {
+  opacity: 0;
+  transition: opacity 1.8s ease;
+}
+
+.reveal-fade.is-visible {
+  opacity: 1;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(120px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in-portada {
+  animation: fadeIn ease 8s;
+}
+
+.bounce-in {
+  animation: bounce-in 2s ease infinite;
+  width: 150px;
+  height: 150px;
+  display: inline-block;
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-fade {
+    opacity: 1 !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  .bounce-in,
+  .fade-in-portada,
+  .scroll-down,
+  .vertical_shake,
+  .pulse {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------- Parallax ---------- */
+
+.parallax {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* iOS / Android no soportan background-attachment: fixed */
+@media (max-width: 1024px), (hover: none) {
+  .parallax {
+    background-attachment: scroll;
+  }
+}
+
+/* ---------- Audio ---------- */
+
+section.audio {
+  position: fixed;
+  top: 20px;
+  right: 1rem;
+  z-index: 50;
+}
+
+.botonAudio svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.botonAudio {
+  width: 5rem;
+  height: 5rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.pulse {
+  animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.vertical_shake {
+  animation: vertical-shaking 0.7s infinite;
+}
+
+@keyframes vertical-shaking {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(4px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  75% {
+    transform: translateY(4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Portada ---------- */
+
+section.portada {
+  height: 100vh;
+  min-height: 560px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.logo-portada {
+  text-align: center;
+  color: #ffffff;
+  padding-inline: 20px;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+}
+
+.logo-portada .nombres {
+  font-family: var(--font-script), "Great Vibes", cursive;
+  font-size: clamp(3.2rem, 13vw, 6.5rem);
+  line-height: 1.1;
+  margin: 0;
+  font-weight: 400;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-portada .nombres .amp {
+  font-size: 0.45em;
+  line-height: 1;
+  margin-block: 0.08em;
+  opacity: 0.9;
+}
+
+.logo-portada .separador {
+  display: block;
+  width: 120px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.85);
+  margin: 26px auto 22px;
+}
+
+.logo-portada .fecha-portada {
+  font-size: clamp(0.85rem, 3.4vw, 1.1rem);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  font-weight: 300;
+  margin: 0;
+}
+
+.scroll-down {
+  cursor: pointer;
+  position: absolute;
+  bottom: 40px;
+  display: block;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  border-bottom: 5px solid var(--color-primario);
+  border-right: 5px solid var(--color-primario);
+  z-index: 9;
+  left: calc(50% - 15px);
+  padding: 0;
+  transform: rotate(45deg);
+  animation: fade_move_down 2s ease-in-out infinite;
+}
+
+@keyframes fade_move_down {
+  0% {
+    transform: translate(0, -10px) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 10px) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+/* ---------- Frase ---------- */
+
+section.frase {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 70px 0;
+  background-color: var(--color-primario);
+}
+
+section.frase h4,
+section.frase p {
+  color: #000000;
+}
+
+section.frase h4 {
+  margin-bottom: 20px;
+}
+
+section.frase .firma {
+  font-family: var(--font-script), "Great Vibes", cursive;
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
+/* ---------- Cuenta regresiva ---------- */
+
+section.cuenta-regresiva {
+  text-align: center;
+  padding-top: 40px;
+  background-color: var(--color-secundario);
+  height: 210px;
+}
+
+section.cuenta-regresiva p {
+  color: #ffffff;
+  margin-top: 0;
+}
+
+.num_cuenta {
+  font-size: 30px;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.text_cuenta {
+  font-size: 15px;
+  margin-bottom: 0;
+}
+
+.reloj-numeros {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.reloj-numeros .bloque {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 56px;
+}
+
+#reloj {
+  text-align: center;
+  font-size: 25px;
+  margin-bottom: 0;
+}
+
+/* ---------- Ceremonia y fiesta ---------- */
+
+section.ceremonia-fiesta {
+  margin-bottom: 3rem;
+  padding-top: 40px;
+}
+
+section.ceremonia-fiesta .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+section.ceremonia-fiesta .columna {
+  text-align: center;
+  padding: 15px;
+  flex: 1 1 100%;
+}
+
+section.ceremonia-fiesta.dos-columnas .columna {
+  flex: 1 1 50%;
+}
+
+section.ceremonia-fiesta .columna h4 {
+  margin-top: 15px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+section.ceremonia-fiesta .columna p {
+  margin-bottom: 25px;
+}
+
+/* ---------- Galería ---------- */
+
+section.galeria {
+  padding-bottom: 50px;
+}
+
+section.galeria h4 {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.grid-galeria {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.item-galeria {
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.item-galeria button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.item-galeria img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  transition: transform 0.3s ease-out;
+  border-radius: 10px;
+}
+
+.item-galeria button:hover img {
+  transform: scale(1.1);
+}
+
+/* Lightbox */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: var(--color-primario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border: none;
+}
+
+.lightbox img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 86vh;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.lightbox-cerrar,
+.lightbox-nav {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-texto);
+}
+
+.lightbox-cerrar {
+  top: 18px;
+  right: 18px;
+}
+
+.lightbox-nav.prev {
+  left: 14px;
+  top: calc(50% - 22px);
+}
+
+.lightbox-nav.next {
+  right: 14px;
+  top: calc(50% - 22px);
+}
+
+/* ---------- Dress code ---------- */
+
+section.dresscode {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 70px 0;
+  background-color: var(--color-primario);
+}
+
+section.dresscode h4 {
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+section.dresscode p {
+  color: #000000;
+}
+
+/* ---------- Instagram ---------- */
+
+section.instagram {
+  text-align: center;
+  padding: 90px 20px;
+}
+
+section.instagram span.hashtag {
+  font-size: 30px;
+  font-weight: 400;
+  color: #000000;
+  display: inline-block;
+}
+
+section.instagram p {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  color: #000000;
+}
+
+/* ---------- Confirmar asistencia ---------- */
+
+section.confirmar {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+section.confirmar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+section.confirmar .container {
+  padding: 120px 20px;
+  position: relative;
+}
+
+section.confirmar h4 {
+  margin-bottom: 25px;
+}
+
+section.confirmar p {
+  margin-bottom: 20px;
+}
+
+/* ---------- Regalos / CBU ---------- */
+
+section.cbu {
+  text-align: center;
+  padding: 40px 0 70px;
+  background-color: var(--color-primario);
+}
+
+.modal-cbu {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: var(--color-primario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: none;
+}
+
+.modal-cbu .caja {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 420px;
+  width: 100%;
+  position: relative;
+}
+
+.modal-cbu span.title {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  font-size: 25px;
+  color: var(--color-primario);
+  margin-bottom: 8px;
+}
+
+.modal-cbu ul {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.modal-cbu ul li {
+  font-weight: 300;
+  margin-bottom: 4px;
+}
+
+.copiar {
+  border: none;
+  background: transparent;
+  color: var(--color-texto);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 400;
+}
+
+/* ---------- Canciones ---------- */
+
+section.canciones {
+  text-align: center;
+  padding: 70px 0 100px;
+}
+
+section.canciones h4 {
+  margin-bottom: 25px;
+}
+
+section.canciones p {
+  margin-bottom: 20px;
+}
+
+/* ---------- Gracias ---------- */
+
+section.gracias {
+  text-align: center;
+  padding: 50px 0;
+  background-color: var(--color-secundario);
+}
+
+section.gracias p {
+  color: #ffffff;
+  margin: 0;
+}
+
+/* ---------- Footer ---------- */
+
+section.footer {
+  text-align: center;
+  padding: 20px 0;
+  background-color: var(--color-footer);
+}
+
+section.footer p {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 300;
+  margin: 0;
+}
+
+section.footer a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* ---------- Media queries ---------- */
+
+@media (max-width: 760px) {
+  section.cuenta-regresiva {
+    height: 220px;
+  }
+
+  section.ceremonia-fiesta.dos-columnas .columna {
+    flex: 1 1 100%;
+  }
+
+  .grid-galeria {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  section.confirmar {
+    min-height: 450px;
+  }
+
+  .botonAudio {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .bounce-in {
+    width: 120px;
+    height: 120px;
+  }
 }

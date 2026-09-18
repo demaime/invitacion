@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Invitación de boda
 
-## Getting Started
+Invitación digital de una sola página, hecha con Next.js (App Router) + React.
+Replica la estructura y el diseño del modelo de referencia, adaptado a un casamiento.
 
-First, run the development server:
+## Cómo correrla
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev     # http://localhost:3000
+npm run build   # build de producción
+npm start       # servir el build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Dónde se edita el contenido
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Todo el texto, fechas y links están en un solo archivo: [`app/lib/invitacion.ts`](app/lib/invitacion.ts).**
+No hace falta tocar los componentes para personalizar la invitación.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Qué querés cambiar | Dónde |
+| --- | --- |
+| Nombres de los novios | `novios` |
+| Fecha para la cuenta regresiva | `fechaEvento` (formato ISO con zona horaria) |
+| Fecha que se ve en la portada | `fechaPortada` |
+| Frase de bienvenida | `frase` |
+| Ceremonia / Fiesta (horario, lugar, mapa) | `ceremonia`, `fiesta` |
+| Fotos de la galería | `galeria` |
+| Dress code | `dressCode` |
+| Instagram y hashtag | `instagram` |
+| Link del formulario de asistencia | `confirmar.url` |
+| Datos bancarios para regalos | `regalos.datosBancarios` |
+| Link del formulario de canciones | `canciones.url` |
+| Texto final y pie de página | `gracias`, `footer` |
 
-## Learn More
+Cada sección tiene un `mostrar: true / false` para prenderla o apagarla.
 
-To learn more about Next.js, take a look at the following resources:
+## Cambiar las fotos
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Las imágenes actuales son **placeholders** (degradés generados, no fotos reales).
+Para poner las tuyas:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Copiá tus archivos dentro de `public/img/`:
+   - `public/img/portada.jpg` → foto de portada (apaisada, idealmente 1600px de ancho o más)
+   - `public/img/confirmar.jpg` → fondo de la sección "Confirmación de asistencia"
+   - `public/img/galeria/1.jpg` … `8.jpg` → galería (cuadradas quedan mejor)
+2. Actualizá las rutas en `app/lib/invitacion.ts` (cambiá `.png` por `.jpg`).
+3. Podés poner más o menos de 8 fotos: la grilla se acomoda sola.
 
-## Deploy on Vercel
+## Música de fondo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Dejá tu canción en `public/musica.mp3`. Si no querés música, poné
+`musica.mostrar: false` en el config.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+El botón siempre arranca en pausa: los navegadores bloquean el audio automático.
+
+## Colores y tipografías
+
+La paleta está en `:root`, arriba de [`app/globals.css`](app/globals.css):
+
+```css
+--color-primario: #e5c6c6;   /* rosa empolvado: botones, frase, dress code, regalos */
+--color-secundario: #c0b9b0; /* gris cálido: cuenta regresiva y cierre */
+```
+
+Las tipografías se cargan con `next/font` en [`app/layout.tsx`](app/layout.tsx):
+Montserrat para los textos y Great Vibes para los nombres de la portada.
+
+## Estructura
+
+```
+app/
+  layout.tsx              fuentes, metadata
+  page.tsx                orden de las secciones
+  globals.css             todo el diseño
+  lib/invitacion.ts       contenido editable
+  components/
+    AudioPlayer.tsx       botón flotante de música
+    Portada.tsx           portada con parallax y flecha
+    CuentaRegresiva.tsx   contador en vivo
+    Galeria.tsx           grilla + visor de fotos
+    Regalos.tsx           datos bancarios en modal
+    Reveal.tsx            animación al entrar en pantalla
+    Iconos.tsx            iconos de cada sección
+public/img/               imágenes
+```
